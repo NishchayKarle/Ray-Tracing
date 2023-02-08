@@ -20,7 +20,7 @@ double **create_2d_array(int grid_size)
 
     for (int i = 0; i < grid_size; i++)
         for (int j = 0; j < grid_size; j++)
-            grid[i][j] = 0;
+            grid[i][j] = 0.0;
 
     return grid;
 }
@@ -99,7 +99,7 @@ void write_to_file(FILE *fp, int N, double **arr)
     {
         for (int j = 0; j < N; j++)
         {
-            fprintf(fp, "%e, ", arr[i][j]);
+            fprintf(fp, "%f, ", arr[i][j]);
         }
         fprintf(fp, "\n");
     }
@@ -141,8 +141,8 @@ void ray_tracing(double **G, int grid_size, long int N_rays,
 
             scalar_multiplication(V, &W_V, W);
             vector_dot_product(V, C, &V_C);
-        } while (!(abs(W->x) < W_max &&
-                   abs(W->z) < W_max &&
+        } while (!(fabs(W->x) < W_max &&
+                   fabs(W->z) < W_max &&
                    V_C * V_C + R * R - C_C > 0));
 
         vector_dot_product(V, C, &V_C);
@@ -166,7 +166,7 @@ void ray_tracing(double **G, int grid_size, long int N_rays,
 
         // BRIGHTNESS OBSERVED AT I
         vector_dot_product(S, N, &S_N);
-        b = S_N > 0.0 ? S_N : 0.0;
+        b = fmax(0.0, S_N);
 
         // FIND ij
         i = grid_size - (grid_size) * (W->x + W_max) / (2 * W_max);
