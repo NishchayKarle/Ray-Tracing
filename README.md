@@ -1,7 +1,7 @@
 # Project 2
 
 ### IMAGE GENERATED
-![Ray Object](ray_tracing_object.png)
+![Ray Object](./Milestone-1/ray_tracing_object.png)
 
 ### Compiling
 * Use make file: make ray_tracing_serial
