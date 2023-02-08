@@ -3,6 +3,7 @@
 #include <math.h>
 #include <time.h>
 
+// struct to represent a 3d Vector
 struct vector
 {
     double x,
@@ -125,7 +126,7 @@ void ray_tracing(double **G, int grid_size, long int N_rays,
 
         do
         {
-            // SAMPLE V
+            // SAMPLING V
             double phi = random_phi_values(),
                    cos_theta = random_cos_values(),
                    sin_theta = sqrt(1 - cos_theta * cos_theta),
@@ -145,16 +146,25 @@ void ray_tracing(double **G, int grid_size, long int N_rays,
                    V_C * V_C + R * R - C_C > 0));
 
         vector_dot_product(V, C, &V_C);
+
         t = V_C - sqrt(V_C * V_C + R * R - C_C);
 
+        // INTERSECTION OF VIEW RAY AND SPHERE
         scalar_multiplication(V, &t, I);
+
         vector_subtraction(I, C, IminusC);
         vector_magnitude(IminusC, &mag);
+
+        // UNIT NORMAL VECTOR AT I
         unit_normal_vector(IminusC, &mag, N);
+
         vector_subtraction(L, I, LminusI);
         vector_magnitude(LminusI, &mag);
+
+        // DIRECTION OF LIGHT SOURCE
         unit_normal_vector(LminusI, &mag, S);
 
+        // BRIGHTNESS OBSERVED AT I
         vector_dot_product(S, N, &S_N);
         b = S_N > 0.0 ? S_N : 0.0;
 
@@ -162,6 +172,7 @@ void ray_tracing(double **G, int grid_size, long int N_rays,
         i = grid_size - (grid_size) * (W->x + W_max) / (2 * W_max);
         j = (grid_size) * (W->z + W_max) / (2 * W_max);
 
+        // ADD BRIGHTNESS TO GRID POINT
         G[i][j] += b;
     }
 
@@ -179,6 +190,7 @@ void ray_tracing(double **G, int grid_size, long int N_rays,
 int main(int argc, char **argv)
 {
     srand(time(NULL));
+
     int grid_size = atoi(argv[1]);
     long int N_rays = atoi(argv[2]);
 
@@ -193,6 +205,7 @@ int main(int argc, char **argv)
 
     ray_tracing(G, grid_size, N_rays, &L, &C, W_y, W_max, R);
 
+    // WRITE GRID TO A FILE
     FILE *fp1 = fopen("ray_tracing_object.txt", "w");
     write_to_file(fp1, grid_size, G);
 
