@@ -1,7 +1,6 @@
- # **MILESTONE-2**
  ### IMAGE: ```1000 x 1000 grid and 1,000,000,000 rays```
  ![OUTPUT.PNG](./IMAGE.png)
-## **COMPILE AND RUN** (Milestone-2/makefile)
+## **COMPILE AND RUN** 
 * SERIAL
   * ```make serial```
   * ```./serial <grid_size> <num_of_rays>```
